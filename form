@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice + Form Submit</title>
+</head>
+<body>
+  <h1>Submit Your Info</h1>
+  <form id="userForm">
+    <label>Name: <input type="text" name="name" required /></label><br /><br />
+    <label>Email: <input type="email" name="email" required /></label><br /><br />
+    <label>Phone: <input type="tel" name="phone" required /></label><br /><br />
+    <label>Phone: <input type="text" name="service inquire for" required /></label><br /><br />
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const webhookUrl = "https://hook.eu2.make.com/c0j87cwa96965cyvpne2qdtlos6ib4hv"; // ✅ replace with Make webhook
+
+    document.getElementById("userForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          alert("Submitted successfully!");
+          this.reset();
+        } else {
+          alert("Submission failed.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error occurred.");
+      }
+    });
+  </script>
+</body>
+</html>
